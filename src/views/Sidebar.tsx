@@ -13,19 +13,23 @@ export default function AppSidebar() {
     activePanelItems: state.activePanelItems,
   }));
   return (
-    <Sidebar.View>
-      {activePanelItems.map((panel, index) => {
-        const item = panelItems[panel];
-        return (
-          <Sidebar.Item
-            key={index}
-            icon={<item.icon className="w-6 h-6" />}
-            label={item.label}
-            selected={selectedPanel === item.label}
-            onSelect={changeSelectedPanel}
-          />
-        );
-      })}
-    </Sidebar.View>
+    <>
+      <Sidebar.View>
+        {activePanelItems.map((panel, index) => {
+          const item = panelItems[panel];
+          return (
+            <Sidebar.Item
+              key={index}
+              name={panel}
+              icon={<item.icon className="w-6 h-6" />}
+              label={item.label}
+              selected={selectedPanel === panel}
+              onSelect={changeSelectedPanel}
+            />
+          );
+        })}
+      </Sidebar.View>
+      {panelItems[selectedPanel].component}
+    </>
   );
 }

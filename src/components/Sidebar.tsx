@@ -1,5 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { create } from "zustand";
+import { DefaultPanelItem } from "../panelItems";
 
 type SidebarProps = {
   children?: React.ReactNode;
@@ -7,69 +9,67 @@ type SidebarProps = {
 
 type SidebarItemProps = {
   icon: React.ReactNode;
+  name: DefaultPanelItem;
   label: string;
   selected: boolean;
-  onSelect: (name: string) => void;
+  onSelect: (name: DefaultPanelItem) => void;
 };
 
-const SidebarContext = React.createContext<{
+const useSidebarController = create<{
   expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
-}>({
-  expanded: true,
-  setExpanded: () => {},
-});
-
-function SidebarProvider({ children }: { children: React.ReactNode }) {
-  const [expanded, setExpanded] = React.useState(false);
-  return (
-    <SidebarContext.Provider
-      value={{
-        expanded,
-        setExpanded,
-      }}
-    >
-      {children}
-    </SidebarContext.Provider>
-  );
-}
+  setExpanded: (newValue: boolean) => void;
+}>((set) => ({
+  expanded: false,
+  setExpanded: (newValue: boolean) =>
+    set({
+      expanded: newValue,
+    }),
+}));
 
 function SidebarView({ children }: SidebarProps) {
-  const { setExpanded } = React.useContext(SidebarContext);
+  const [setExpanded] = useSidebarController((state) => [state.setExpanded]);
   return (
-    <SidebarProvider>
-      <AnimatePresence>
-        <motion.nav
-          className="p-2 w-fit flex flex-col"
-          onMouseEnter={() => setExpanded(true)}
-          onMouseLeave={() => setExpanded(false)}
-        >
-          {children}
-        </motion.nav>
-      </AnimatePresence>
-    </SidebarProvider>
+    <AnimatePresence>
+      <motion.nav
+        className="p-2 w-fit flex flex-col"
+        onMouseEnter={() => {
+          setExpanded(true);
+        }}
+        onMouseLeave={() => setExpanded(false)}
+      >
+        {children}
+      </motion.nav>
+    </AnimatePresence>
   );
 }
 
-function SidebarItem({ icon, label, selected, onSelect }: SidebarItemProps) {
-  const { expanded } = React.useContext(SidebarContext);
+function SidebarItem({
+  icon,
+  label,
+  selected,
+  onSelect,
+  name,
+}: SidebarItemProps) {
+  const [expanded] = useSidebarController((state) => [state.expanded]);
+  const showLabels = false;
   const additionalStyles = selected
-    ? " bg-white shadow-lg hover:shadow-xl "
-    : " hover:bg-slate-500/20";
+    ? " p-3 bg-white shadow-lg hover:shadow-xl "
+    : " m-3";
   return (
     <button
       className={
-        "p-3 hover:scale-105 rounded-xl transition-all flex gap-3" +
+        "hover:scale-105 rounded-lg transition-all flex gap-3" +
         additionalStyles
       }
-      onClick={() => onSelect(label)}
+      onClick={() => onSelect(name)}
     >
       {icon}
-      {expanded && (
+      {expanded && showLabels && (
         <motion.p
           transition={{ stiffness: 20 }}
           animate={{ opacity: [0, 1], x: [-20, 0] }}
           exit={{ opacity: 0, x: -200 }}
+          className="font-medium"
         >
           {label}
         </motion.p>

@@ -7,9 +7,9 @@ import {
   LuTestTube2,
 } from "react-icons/lu";
 import { ImWarning } from "react-icons/im";
-import PanelItem from "./types/PanelItem";
+import PanelProject from "./views/PanelProject";
 
-export type DefaultPanelItems =
+export type DefaultPanelItem =
   | "project"
   | "versionControl"
   | "search"
@@ -21,30 +21,37 @@ export type DefaultPanelItems =
 export default {
   project: {
     icon: LuFolderGit,
-    label: "Project",
+    label: "Project" as DefaultPanelItem,
+    component: <PanelProject></PanelProject>,
   },
   versionControl: {
     icon: LuGitBranch,
-    label: "Version Control",
+    label: "Version Control" as DefaultPanelItem,
+    component: <>Version</>,
   },
   search: {
     icon: LuSearch,
-    label: "Search",
+    label: "Search" as DefaultPanelItem,
+    component: <>Search</>,
   },
   tests: {
     icon: LuTestTube2,
-    label: "Tests",
+    label: "Tests" as DefaultPanelItem,
+    component: <>Tests</>,
   },
   debug: {
     icon: LuBug,
-    label: "Debug",
+    label: "Debug" as DefaultPanelItem,
+    component: <>Debug</>,
   },
   warnings: {
     icon: ImWarning,
-    label: "Warnings",
+    label: "Warnings" as DefaultPanelItem,
+    component: <>Warnings</>,
   },
   containers: {
     icon: LuContainer,
-    label: "Containers",
+    label: "Containers" as DefaultPanelItem,
+    component: <>Containers</>,
   },
 };

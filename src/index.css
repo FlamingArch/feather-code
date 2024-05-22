@@ -10,6 +10,6 @@
   overflow: visible;
 }
 
-body {
-  background-color: #f6f8fa;
+#root {
+  background-color: #f5f7facc;
 }
