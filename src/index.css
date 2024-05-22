@@ -8,8 +8,10 @@
   font-weight: 400;
   font-style: normal;
   overflow: visible;
+  @apply text-[13px];
 }
 
 #root {
   background-color: #f5f7facc;
+  @apply w-screen h-screen overflow-hidden;
 }

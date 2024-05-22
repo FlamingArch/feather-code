@@ -1,4 +1,4 @@
-import Sidebar from "../components/Sidebar";
+import Tab from "../components/Tab";
 import useAppStore from "../store";
 import panelItems from "../panelItems";
 
@@ -13,23 +13,22 @@ export default function AppSidebar() {
     activePanelItems: state.activePanelItems,
   }));
   return (
-    <>
-      <Sidebar.View>
-        {activePanelItems.map((panel, index) => {
-          const item = panelItems[panel];
-          return (
-            <Sidebar.Item
-              key={index}
-              name={panel}
-              icon={<item.icon className="w-6 h-6" />}
-              label={item.label}
-              selected={selectedPanel === panel}
-              onSelect={changeSelectedPanel}
-            />
-          );
-        })}
-      </Sidebar.View>
-      {panelItems[selectedPanel].component}
-    </>
+    <nav className="flex flex-col p-2">
+      {activePanelItems.map((panel, index) => {
+        const item = panelItems[panel];
+        return (
+          <Tab.Item
+            hideLabel
+            key={index}
+            icon={<item.icon className="w-6 h-6 m-2" />}
+            label={item.label}
+            selected={selectedPanel === panel}
+            onSelect={() =>
+              changeSelectedPanel(selectedPanel === panel ? undefined : panel)
+            }
+          />
+        );
+      })}
+    </nav>
   );
 }

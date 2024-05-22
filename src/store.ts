@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { DefaultPanelItem } from "./panelItems";
 
 type AppStoreType = {
-  selectedPanel: DefaultPanelItem;
+  selectedPanel?: DefaultPanelItem;
   activePanelItems: DefaultPanelItem[];
-  changeSelectedPanel: (newValue: DefaultPanelItem) => void;
+  changeSelectedPanel: (newValue: DefaultPanelItem | undefined) => void;
 };
 
 const useAppStore = create<AppStoreType>((set) => ({
@@ -18,7 +18,7 @@ const useAppStore = create<AppStoreType>((set) => ({
     "warnings",
     "containers",
   ],
-  changeSelectedPanel: (newValue: DefaultPanelItem) =>
+  changeSelectedPanel: (newValue: DefaultPanelItem | undefined) =>
     set({ selectedPanel: newValue }),
 }));
 
